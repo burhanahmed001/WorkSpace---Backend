@@ -1,4 +1,4 @@
-const Workspace = require('../models/Workspace'); // Apne model ka path dekh lein
+const Workspace = require('../models/Workspace');
 
 // Create a new workspace
 exports.createWorkspace = async (req, res) => {
@@ -7,7 +7,7 @@ exports.createWorkspace = async (req, res) => {
     const newWorkspace = new Workspace({
       name,
       description,
-      user: req.user.id
+      owner: req.user.id // Yahan 'user' ki jagah 'owner' hona chahiye
     });
     const savedWorkspace = await newWorkspace.save();
     res.status(201).json({ success: true, workspace: savedWorkspace });
@@ -16,10 +16,10 @@ exports.createWorkspace = async (req, res) => {
   }
 };
 
-// Get all workspaces for the logged-in user
+// Get all workspaces for workspace owner/user
 exports.getWorkspaces = async (req, res) => {
   try {
-    const workspaces = await Workspace.find({ user: req.user.id });
+    const workspaces = await Workspace.find({ owner: req.user.id }); // Yahan bhi 'owner' karein
     res.status(200).json(workspaces);
   } catch (error) {
     res.status(500).json({ message: "Failed to fetch workspaces", error: error.message });
