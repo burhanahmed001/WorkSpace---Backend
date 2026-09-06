@@ -28,6 +28,9 @@ app.use('/api/admin', require('./routes/adminRoutes'));
 app.get('/', (req, res) => {
   res.send('Backend API is running successfully!');
 });
+app.get('/api', (req, res) => {
+  res.send('API is running successfully!');
+});
 
 const PORT = process.env.PORT || 5000;
 
