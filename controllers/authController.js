@@ -87,7 +87,7 @@ exports.loginUser = async (req, res) => {
         name: user.name,
         email: user.email,
         role: user.role,
-        token: generateToken(user._id, user.role) // Yahan role pass kar diya hai taake token mein save ho
+        token: generateToken(user._id, user.role)
       });
     } else {
       return res.status(401).json({ message: 'Invalid email or password' });
@@ -132,7 +132,8 @@ exports.forgotPassword = async (req, res) => {
     user.resetPasswordExpires = Date.now() + 15 * 60 * 1000; 
     await user.save();
 
-    const frontendURL = process.env.FRONTEND_URL || "https://ecommerce-frontend-six-bice.vercel.app";
+    // Updated frontend URL fallback to match workspace manager app
+    const frontendURL = process.env.FRONTEND_URL || "https://workspace-frontend-two.vercel.app";
     const resetLink = `${frontendURL}/auth/reset-password/${resetToken}`;
 
     await transporter.sendMail({
